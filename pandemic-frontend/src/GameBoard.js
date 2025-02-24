@@ -47,6 +47,9 @@ const GameBoard = () => {
     if (!gameState) return <div>Loading game...</div>;
     
     return (
+    console.log("Game State:", gameState);
+    console.log("City Positions:", cityPositions);
+
         <div className="game-container">
             <h1>Pandemic Game - Test Update</h1>
             <div className="game-info">
