@@ -1,93 +1,85 @@
-// pandemic_backend/server.js
 const express = require('express');
 const cors = require('cors');
+
 const app = express();
 const PORT = 4000;
 
-// Enable CORS for frontend access
 app.use(cors());
 app.use(express.json());
 
-// Game state (basic setup)
-let gameState = {
-    players: [],
-    cities: {},
-    infectionDeck: [],
-    playerDeck: [],
-    outbreaks: 0,
-    curesDiscovered: 0,
-    researchStations: ['Atlanta'],
+// 🔹 Role Cards (One per player)
+const roles = [
+    "Medic", "Scientist", "Researcher", "Dispatcher", "Operations Expert",
+    "Quarantine Specialist", "Contingency Planner"
+];
+
+// 🔹 Pawns (One per player, all start in Atlanta)
+const pawns = roles.map(role => ({ role, location: "Atlanta" }));
+
+// 🔹 Player Deck (48 City Cards, 6 Epidemic Cards, 5 Event Cards)
+const playerDeck = [
+    ...Array(48).fill().map((_, i) => ({ type: "City", name: `City ${i + 1}` })), // 48 City Cards
+    ...Array(6).fill({ type: "Epidemic" }), // 6 Epidemic Cards
+    ...Array(5).fill().map((_, i) => ({ type: "Event", name: `Event ${i + 1}` })) // 5 Event Cards
+];
+
+// 🔹 Infection Deck (48 Cards)
+const infectionDeck = Array(48).fill().map((_, i) => `City ${i + 1}`);
+
+// 🔹 Disease Cubes (96 total - 24 per color)
+const diseases = {
+    yellow: { cubes: 24 },
+    blue: { cubes: 24 },
+    black: { cubes: 24 },
+    red: { cubes: 24 }
 };
 
-// Initialize game with default settings
-app.post('/start-game', (req, res) => {
-    gameState = initializeGame();
-    res.json({ message: 'Game started!', gameState });
-});
+// 🔹 Game Markers
+const markers = {
+    infectionRate: 0,
+    outbreaks: 0,
+    cureMarkers: {
+        yellow: false,
+        blue: false,
+        black: false,
+        red: false
+    },
+    eradicated: {  // ✅ New eradication state
+        yellow: false,
+        blue: false,
+        black: false,
+        red: false
+    }
+};
 
-// Get current game state
+
+// 🔹 Cities and Connections
+const cities = {
+    "Atlanta": { infectionLevel: 1, connectedCities: ["Washington", "Miami"] },
+    "Washington": { infectionLevel: 2, connectedCities: ["Atlanta", "New York"] },
+    "Miami": { infectionLevel: 0, connectedCities: ["Atlanta", "Mexico City"] },
+    "New York": { infectionLevel: 1, connectedCities: ["Washington"] },
+    "Mexico City": { infectionLevel: 3, connectedCities: ["Miami"] }
+};
+
+// 🔹 Full Game State
+const gameState = {
+    players: pawns,
+    playerDeck,
+    infectionDeck,
+    diseases,
+    markers,
+    cities,
+    researchStations: ["Atlanta"]
+};
+
+// 🔹 Endpoint to Get Game State
 app.get('/game-state', (req, res) => {
-    console.log("Sending game state:", gameState);  // Debugging line
+    console.log("✅ Sending game state:", gameState);
     res.json(gameState);
 });
 
-
-// Handle player actions (move, treat, build, etc.)
-app.post('/action', (req, res) => {
-    const { player, action, city } = req.body;
-    const result = performAction(player, action, city);
-    res.json(result);
-});
-
-// Infect cities (simulating an infection phase)
-app.post('/infect', (req, res) => {
-    infectCities();
-    res.json({ message: 'Infections processed!', gameState });
-});
-
-// Initialize basic game logic
-function initializeGame() {
-    return {
-        players: [
-            { id: 1, name: 'Player 1', role: 'Medic', location: 'Atlanta' },
-        ],
-        cities: {
-            'Atlanta': { infectionLevel: 0, connectedCities: ['Washington', 'Miami'] },
-            'Washington': { infectionLevel: 0, connectedCities: ['Atlanta', 'New York'] },
-            'Miami': { infectionLevel: 0, connectedCities: ['Atlanta', 'Mexico City'] },
-        },
-        infectionDeck: ['Atlanta', 'Washington', 'Miami'],
-        playerDeck: ['Atlanta', 'Washington', 'Miami'],
-        outbreaks: 0,
-        curesDiscovered: 0,
-        researchStations: ['Atlanta'],
-    };
-}
-
-// Perform player actions
-function performAction(player, action, city) {
-    if (action === 'move' && gameState.cities[city]) {
-        const playerObj = gameState.players.find(p => p.name === player);
-        if (playerObj) {
-            playerObj.location = city;
-            return { success: true, message: `${player} moved to ${city}` };
-        }
-    }
-    return { success: false, message: 'Invalid action' };
-}
-
-// Infect cities
-function infectCities() {
-    const cityToInfect = gameState.infectionDeck.shift();
-    if (cityToInfect) {
-        gameState.cities[cityToInfect].infectionLevel++;
-        if (gameState.cities[cityToInfect].infectionLevel > 3) {
-            gameState.outbreaks++;
-        }
-    }
-}
-
-// Start the server
+// 🔹 Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

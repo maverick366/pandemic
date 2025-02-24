@@ -13,6 +13,13 @@ const cityPositions = {
     'Mexico City': { x: 150, y: 450 }
 };
 
+const getInfectionColor = (infectionLevel) => {
+    if (infectionLevel >= 3) return "red";
+    if (infectionLevel === 2) return "orange";
+    if (infectionLevel === 1) return "yellow";
+    return "lightblue";
+};
+
 const GameBoard = () => {
     const [gameState, setGameState] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
@@ -31,21 +38,21 @@ const GameBoard = () => {
         }
     };
 
-    // Log when gameState updates
+    // Log gameState updates
     useEffect(() => {
         console.log("Updated gameState:", gameState);
     }, [gameState]);
 
     if (!gameState || !gameState.cities || Object.keys(gameState.cities).length === 0) {
-        return <div>Loading game...</div>;
+        return <div className="loading">Loading game...</div>;
     }
 
     return (
         <div className="game-container">
             <h1>Pandemic Game</h1>
             <div className="game-info">
-                <h2>Outbreaks: {gameState.outbreaks}</h2>
-                <h2>Cures Discovered: {gameState.curesDiscovered}</h2>
+                <h2>Outbreaks: {gameState.markers.outbreaks}</h2>
+                <h2>Cures Discovered: {Object.values(gameState.markers.cureMarkers).filter(Boolean).length}</h2>
             </div>
 
             <div className="game-board">
@@ -53,7 +60,7 @@ const GameBoard = () => {
                     const position = cityPositions[city];
                     if (!position) return null;
 
-                    console.log("Rendering city:", city, gameState.cities[city]); // Debugging
+                    console.log("Rendering city:", city, gameState.cities[city]);
 
                     return (
                         <div
@@ -62,13 +69,14 @@ const GameBoard = () => {
                             style={{
                                 left: `${position.x}px`,
                                 top: `${position.y}px`,
-                                background: "blue",
-                                color: "white",
+                                background: getInfectionColor(gameState.cities[city].infectionLevel),
+                                color: "black",
                                 padding: "5px",
                                 position: "absolute"
                             }}
+                            onClick={() => setSelectedCity(city)}
                         >
-                            {city}
+                            {city} ({gameState.cities[city].infectionLevel})
                         </div>
                     );
                 })}
