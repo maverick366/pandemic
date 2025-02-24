@@ -20,6 +20,18 @@ const getInfectionColor = (infectionLevel) => {
     return "lightblue";
 };
 
+const treatDisease = async () => {
+    if (!selectedCity) return;
+    try {
+        const response = await axios.post(`${API_URL}/treat-disease`, { city: selectedCity });
+        console.log(response.data.message);
+        fetchGameState(); // Refresh the game state after treating
+    } catch (error) {
+        console.error("Error treating disease:", error);
+    }
+};
+
+
 const GameBoard = () => {
     const [gameState, setGameState] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
@@ -85,7 +97,7 @@ const GameBoard = () => {
             <div className="controls">
                 <h3>Selected City: {selectedCity || 'None'}</h3>
                 <button onClick={() => console.log("Move action")} disabled={!selectedCity}>Move Here</button>
-                <button onClick={() => console.log("Treat action")} disabled={!selectedCity}>Treat Disease</button>
+                <button onClick={treatDisease} disabled={!selectedCity}>Treat Disease</button>
                 <button onClick={() => console.log("Build action")} disabled={!selectedCity}>Build Research Station</button>
             </div>
         </div>
