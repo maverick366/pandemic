@@ -1,0 +1,51 @@
+/* pandemic_frontend/src/GameBoard.css */
+.game-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.game-info {
+    margin-bottom: 20px;
+}
+
+.game-board {
+    position: relative;
+    width: 600px;
+    height: 500px;
+    background-color: #eef; /* Light blue for now (can replace with a map image) */
+    border: 2px solid black;
+    margin: auto;
+}
+
+/* Position cities dynamically */
+.city {
+    position: absolute;
+    background: lightblue;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+}
+
+.city:hover {
+    background: deepskyblue;
+}
+
+/* Infection text inside cities */
+.infection {
+    font-size: 12px;
+    color: red;
+    margin-top: 4px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+}
