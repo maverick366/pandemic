@@ -13,6 +13,7 @@ const cityPositions = {
     'Mexico City': { x: 150, y: 450 }
 };
 
+// Function to determine the color of a city based on infection level
 const getInfectionColor = (infectionLevel) => {
     if (infectionLevel >= 3) return "red";
     if (infectionLevel === 2) return "orange";
@@ -20,21 +21,9 @@ const getInfectionColor = (infectionLevel) => {
     return "lightblue";
 };
 
-const treatDisease = async () => {
-    if (!selectedCity) return;
-    try {
-        const response = await axios.post(`${API_URL}/treat-disease`, { city: selectedCity });
-        console.log(response.data.message);
-        fetchGameState(); // Refresh the game state after treating
-    } catch (error) {
-        console.error("Error treating disease:", error);
-    }
-};
-
-
 const GameBoard = () => {
     const [gameState, setGameState] = useState(null);
-    const [selectedCity, setSelectedCity] = useState('');
+    const [selectedCity, setSelectedCity] = useState(''); // ✅ Ensuring selectedCity is declared
 
     useEffect(() => {
         fetchGameState();
@@ -50,11 +39,28 @@ const GameBoard = () => {
         }
     };
 
-    // Log gameState updates
+    // Log when gameState updates
     useEffect(() => {
         console.log("Updated gameState:", gameState);
     }, [gameState]);
 
+    // ✅ Function to treat a disease in the selected city
+    const treatDisease = async () => {
+        if (!selectedCity) {
+            console.warn("⚠️ No city selected!");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/treat-disease`, { city: selectedCity });
+            console.log(response.data.message);
+            fetchGameState(); // Refresh the game state after treating
+        } catch (error) {
+            console.error("Error treating disease:", error);
+        }
+    };
+
+    // ✅ Ensure we only render when gameState is fully loaded
     if (!gameState || !gameState.cities || Object.keys(gameState.cities).length === 0) {
         return <div className="loading">Loading game...</div>;
     }
@@ -65,6 +71,10 @@ const GameBoard = () => {
             <div className="game-info">
                 <h2>Outbreaks: {gameState.markers.outbreaks}</h2>
                 <h2>Cures Discovered: {Object.values(gameState.markers.cureMarkers).filter(Boolean).length}</h2>
+                <h2>Eradicated Diseases: {Object.entries(gameState.markers.eradicated)
+                    .filter(([_, isEradicated]) => isEradicated)
+                    .map(([color]) => color)
+                    .join(", ") || "None"}</h2>
             </div>
 
             <div className="game-board">
@@ -86,7 +96,7 @@ const GameBoard = () => {
                                 padding: "5px",
                                 position: "absolute"
                             }}
-                            onClick={() => setSelectedCity(city)}
+                            onClick={() => setSelectedCity(city)} // ✅ Selecting the city
                         >
                             {city} ({gameState.cities[city].infectionLevel})
                         </div>
@@ -96,8 +106,13 @@ const GameBoard = () => {
 
             <div className="controls">
                 <h3>Selected City: {selectedCity || 'None'}</h3>
+                <button 
+                    onClick={treatDisease} 
+                    disabled={!selectedCity || gameState.cities[selectedCity].infectionLevel === 0}
+                >
+                    Treat Disease
+                </button>
                 <button onClick={() => console.log("Move action")} disabled={!selectedCity}>Move Here</button>
-                <button onClick={treatDisease} disabled={!selectedCity}>Treat Disease</button>
                 <button onClick={() => console.log("Build action")} disabled={!selectedCity}>Build Research Station</button>
             </div>
         </div>
