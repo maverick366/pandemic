@@ -55,12 +55,59 @@ const markers = {
 
 // 🔹 Cities and Connections
 const cities = {
-    "Atlanta": { infectionLevel: 1, connectedCities: ["Washington", "Miami"] },
-    "Washington": { infectionLevel: 2, connectedCities: ["Atlanta", "New York"] },
-    "Miami": { infectionLevel: 0, connectedCities: ["Atlanta", "Mexico City"] },
-    "New York": { infectionLevel: 1, connectedCities: ["Washington"] },
-    "Mexico City": { infectionLevel: 3, connectedCities: ["Miami"] }
+    // 🔵 BLUE CITIES
+    "San Francisco": { color: "blue", infectionLevel: 0, connectedCities: ["Los Angeles", "Chicago", "Tokyo", "Manila"] },
+    "Chicago": { color: "blue", infectionLevel: 0, connectedCities: ["San Francisco", "Los Angeles", "Mexico City", "Atlanta", "Montreal"] },
+    "Atlanta": { color: "blue", infectionLevel: 0, connectedCities: ["Chicago", "Washington", "Miami"] },
+    "Montreal": { color: "blue", infectionLevel: 0, connectedCities: ["Chicago", "Washington", "New York"] },
+    "Washington": { color: "blue", infectionLevel: 0, connectedCities: ["Montreal", "New York", "Miami", "Atlanta"] },
+    "New York": { color: "blue", infectionLevel: 0, connectedCities: ["Montreal", "Washington", "London", "Madrid"] },
+    "London": { color: "blue", infectionLevel: 0, connectedCities: ["New York", "Madrid", "Paris", "Essen"] },
+    "Madrid": { color: "blue", infectionLevel: 0, connectedCities: ["New York", "London", "Paris", "Sao Paulo"] },
+    "Paris": { color: "blue", infectionLevel: 0, connectedCities: ["Madrid", "London", "Essen", "Milan", "Algiers"] },
+    "Essen": { color: "blue", infectionLevel: 0, connectedCities: ["London", "Paris", "Milan", "St. Petersburg"] },
+    "Milan": { color: "blue", infectionLevel: 0, connectedCities: ["Essen", "Paris", "Istanbul"] },
+    "St. Petersburg": { color: "blue", infectionLevel: 0, connectedCities: ["Essen", "Istanbul", "Moscow"] },
+
+    // 🟡 YELLOW CITIES
+    "Los Angeles": { color: "yellow", infectionLevel: 0, connectedCities: ["San Francisco", "Chicago", "Mexico City", "Sydney"] },
+    "Mexico City": { color: "yellow", infectionLevel: 0, connectedCities: ["Los Angeles", "Chicago", "Miami", "Bogotá", "Lima"] },
+    "Miami": { color: "yellow", infectionLevel: 0, connectedCities: ["Atlanta", "Washington", "Mexico City", "Bogotá"] },
+    "Bogotá": { color: "yellow", infectionLevel: 0, connectedCities: ["Mexico City", "Miami", "Lima", "Sao Paulo", "Buenos Aires"] },
+    "Lima": { color: "yellow", infectionLevel: 0, connectedCities: ["Mexico City", "Bogotá", "Santiago"] },
+    "Santiago": { color: "yellow", infectionLevel: 0, connectedCities: ["Lima"] },
+    "Buenos Aires": { color: "yellow", infectionLevel: 0, connectedCities: ["Bogotá", "Sao Paulo"] },
+    "Sao Paulo": { color: "yellow", infectionLevel: 0, connectedCities: ["Bogotá", "Buenos Aires", "Madrid", "Lagos"] },
+    "Lagos": { color: "yellow", infectionLevel: 0, connectedCities: ["Sao Paulo", "Khartoum", "Kinshasa"] },
+    "Kinshasa": { color: "yellow", infectionLevel: 0, connectedCities: ["Lagos", "Johannesburg", "Khartoum"] },
+    "Johannesburg": { color: "yellow", infectionLevel: 0, connectedCities: ["Kinshasa", "Khartoum"] },
+    "Khartoum": { color: "yellow", infectionLevel: 0, connectedCities: ["Lagos", "Kinshasa", "Johannesburg", "Cairo"] },
+
+    // ⚫ BLACK CITIES
+    "Moscow": { color: "black", infectionLevel: 0, connectedCities: ["St. Petersburg", "Istanbul", "Tehran"] },
+    "Istanbul": { color: "black", infectionLevel: 0, connectedCities: ["Milan", "St. Petersburg", "Moscow", "Baghdad", "Cairo", "Algiers"] },
+    "Baghdad": { color: "black", infectionLevel: 0, connectedCities: ["Istanbul", "Cairo", "Riyadh", "Karachi", "Tehran"] },
+    "Cairo": { color: "black", infectionLevel: 0, connectedCities: ["Istanbul", "Baghdad", "Khartoum", "Algiers"] },
+    "Algiers": { color: "black", infectionLevel: 0, connectedCities: ["Madrid", "Paris", "Istanbul", "Cairo"] },
+    "Tehran": { color: "black", infectionLevel: 0, connectedCities: ["Moscow", "Baghdad", "Karachi", "Delhi"] },
+    "Karachi": { color: "black", infectionLevel: 0, connectedCities: ["Baghdad", "Delhi", "Mumbai", "Riyadh", "Tehran"] },
+    "Riyadh": { color: "black", infectionLevel: 0, connectedCities: ["Baghdad", "Karachi", "Cairo"] },
+    "Delhi": { color: "black", infectionLevel: 0, connectedCities: ["Tehran", "Karachi", "Mumbai", "Chennai", "Kolkata"] },
+    "Mumbai": { color: "black", infectionLevel: 0, connectedCities: ["Karachi", "Delhi", "Chennai"] },
+    "Kolkata": { color: "black", infectionLevel: 0, connectedCities: ["Delhi", "Chennai", "Bangkok", "Hong Kong"] },
+    "Chennai": { color: "black", infectionLevel: 0, connectedCities: ["Mumbai", "Delhi", "Kolkata", "Jakarta", "Bangkok"] },
+
+    // 🔴 RED CITIES
+    "Beijing": { color: "red", infectionLevel: 0, connectedCities: ["Shanghai", "Seoul"] },
+    "Seoul": { color: "red", infectionLevel: 0, connectedCities: ["Beijing", "Shanghai", "Tokyo"] },
+    "Shanghai": { color: "red", infectionLevel: 0, connectedCities: ["Beijing", "Seoul", "Tokyo", "Hong Kong", "Taipei"] },
+    "Hong Kong": { color: "red", infectionLevel: 0, connectedCities: ["Shanghai", "Taipei", "Manila", "Bangkok", "Kolkata"] },
+    "Taipei": { color: "red", infectionLevel: 0, connectedCities: ["Shanghai", "Hong Kong", "Osaka", "Manila"] },
+    "Tokyo": { color: "red", infectionLevel: 0, connectedCities: ["Seoul", "Osaka", "San Francisco"] },
+    "Manila": { color: "red", infectionLevel: 0, connectedCities: ["Taipei", "Hong Kong", "Sydney", "San Francisco", "Jakarta"] },
+    "Sydney": { color: "red", infectionLevel: 0, connectedCities: ["Manila", "Jakarta", "Los Angeles"] }
 };
+
 
 // 🔹 Full Game State
 const gameState = {

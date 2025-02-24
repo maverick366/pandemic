@@ -1,37 +1,75 @@
 /* pandemic_frontend/src/GameBoard.css */
-.game-container {
-    text-align: center;
-    font-family: Arial, sans-serif;
-}
-
-.game-info {
-    margin-bottom: 20px;
-}
-
 .game-board {
     position: relative;
-    width: 600px;
-    height: 500px;
-    background-color: #eef; /* Light blue for now */
+    width: 1000px;  /* Increased width */
+    height: 700px;  /* Increased height */
     border: 2px solid black;
-    margin: auto;
+    background-color: #20232a; /* Darker background */
 }
 
 .city {
-    position: absolute;
-    background: lightblue;
-    padding: 8px;
-    border-radius: 10px;
     cursor: pointer;
-    text-align: center;
-    font-size: 14px;
+    font-size: 8px;
     font-weight: bold;
-    transform: translate(-50%, -50%);
+    transition: transform 0.2s ease-in-out;
+    width: 20px; /* ✅ Ensure cities are 20px */
+    height: 20px; /* ✅ Ensure cities are 20px */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    transform: translate(50%, 50%); /* ✅ Center the city on its coordinates */
 }
 
-.city:hover {
-    background: deepskyblue;
+.city.yellow {
+    color: black; /* ✅ Ensure black text for yellow cities */
 }
+
+.connection {
+    position: absolute;
+    background-color: white;
+    height: 2px;
+    transform-origin: center center; /* ✅ Ensure lines are centered */
+    z-index: 0;
+}
+
+
+.city:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.connection {
+    position: absolute;
+    background-color: white;
+    height: 2px;
+    transform-origin: left center;
+    z-index: 0;
+}
+
+/* ✅ Add arrowhead to right-wrapping connections */
+.connection-wrap-right::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    border-left: 8px solid white;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+/* ✅ Add arrowhead to left-wrapping connections */
+.connection-wrap-left::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    border-right: 8px solid white;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+
 
 /* Infection text inside cities */
 .infection {
