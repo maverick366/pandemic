@@ -5,63 +5,66 @@ import './GameBoard.css';
 
 const API_URL = 'http://localhost:4000';
 
+const SCALE_FACTOR = 2; // Increase map size by 50%
+
 const cityPositions = {
     // 🔵 BLUE CITIES
-    "San Francisco": { x: 100, y: 200, color: "blue" },
-    "Chicago": { x: 150, y: 150, color: "blue" },
-    "Atlanta": { x: 200, y: 200, color: "blue" },
-    "Montreal": { x: 250, y: 150, color: "blue" },
-    "Washington": { x: 300, y: 180, color: "blue" },
-    "New York": { x: 350, y: 160, color: "blue" },
-    "London": { x: 400, y: 120, color: "blue" },
-    "Madrid": { x: 420, y: 160, color: "blue" },
-    "Paris": { x: 460, y: 140, color: "blue" },
-    "Essen": { x: 480, y: 100, color: "blue" },
-    "Milan": { x: 500, y: 140, color: "blue" },
-    "St. Petersburg": { x: 520, y: 80, color: "blue" },
+    "San Francisco": { x: 100 * SCALE_FACTOR, y: 200 * SCALE_FACTOR, color: "blue" },
+    "Chicago": { x: 150 * SCALE_FACTOR, y: 150 * SCALE_FACTOR, color: "blue" },
+    "Atlanta": { x: 200 * SCALE_FACTOR, y: 200 * SCALE_FACTOR, color: "blue" },
+    "Montreal": { x: 250 * SCALE_FACTOR, y: 150 * SCALE_FACTOR, color: "blue" },
+    "Washington": { x: 300 * SCALE_FACTOR, y: 180 * SCALE_FACTOR, color: "blue" },
+    "New York": { x: 350 * SCALE_FACTOR, y: 160 * SCALE_FACTOR, color: "blue" },
+    "London": { x: 400 * SCALE_FACTOR, y: 120 * SCALE_FACTOR, color: "blue" },
+    "Madrid": { x: 420 * SCALE_FACTOR, y: 160 * SCALE_FACTOR, color: "blue" },
+    "Paris": { x: 460 * SCALE_FACTOR, y: 140 * SCALE_FACTOR, color: "blue" },
+    "Essen": { x: 480 * SCALE_FACTOR, y: 100 * SCALE_FACTOR, color: "blue" },
+    "Milan": { x: 500 * SCALE_FACTOR, y: 140 * SCALE_FACTOR, color: "blue" },
+    "St. Petersburg": { x: 520 * SCALE_FACTOR, y: 80 * SCALE_FACTOR, color: "blue" },
 
     // 🟡 YELLOW CITIES
-    "Los Angeles": { x: 120, y: 300, color: "yellow" },
-    "Mexico City": { x: 170, y: 350, color: "yellow" },
-    "Miami": { x: 240, y: 340, color: "yellow" },
-    "Bogotá": { x: 220, y: 400, color: "yellow" },
-    "Lima": { x: 180, y: 450, color: "yellow" },
-    "Santiago": { x: 200, y: 500, color: "yellow" },
-    "Buenos Aires": { x: 240, y: 480, color: "yellow" },
-    "Sao Paulo": { x: 300, y: 460, color: "yellow" },
-    "Lagos": { x: 360, y: 400, color: "yellow" },
-    "Kinshasa": { x: 380, y: 440, color: "yellow" },
-    "Johannesburg": { x: 420, y: 480, color: "yellow" },
-    "Khartoum": { x: 400, y: 400, color: "yellow" },
+    "Los Angeles": { x: 120 * SCALE_FACTOR, y: 300 * SCALE_FACTOR, color: "yellow" },
+    "Mexico City": { x: 170 * SCALE_FACTOR, y: 350 * SCALE_FACTOR, color: "yellow" },
+    "Miami": { x: 240 * SCALE_FACTOR, y: 340 * SCALE_FACTOR, color: "yellow" },
+    "Bogotá": { x: 220 * SCALE_FACTOR, y: 400 * SCALE_FACTOR, color: "yellow" },
+    "Lima": { x: 180 * SCALE_FACTOR, y: 450 * SCALE_FACTOR, color: "yellow" },
+    "Santiago": { x: 200 * SCALE_FACTOR, y: 500 * SCALE_FACTOR, color: "yellow" },
+    "Buenos Aires": { x: 240 * SCALE_FACTOR, y: 480 * SCALE_FACTOR, color: "yellow" },
+    "Sao Paulo": { x: 300 * SCALE_FACTOR, y: 460 * SCALE_FACTOR, color: "yellow" },
+    "Lagos": { x: 360 * SCALE_FACTOR, y: 400 * SCALE_FACTOR, color: "yellow" },
+    "Kinshasa": { x: 380 * SCALE_FACTOR, y: 440 * SCALE_FACTOR, color: "yellow" },
+    "Johannesburg": { x: 420 * SCALE_FACTOR, y: 480 * SCALE_FACTOR, color: "yellow" },
+    "Khartoum": { x: 400 * SCALE_FACTOR, y: 400 * SCALE_FACTOR, color: "yellow" },
 
     // ⚫ BLACK CITIES
-    "Moscow": { x: 540, y: 90, color: "black" },
-    "Istanbul": { x: 520, y: 130, color: "black" },
-    "Baghdad": { x: 550, y: 170, color: "black" },
-    "Cairo": { x: 500, y: 190, color: "black" },
-    "Algiers": { x: 470, y: 170, color: "black" },
-    "Tehran": { x: 570, y: 120, color: "black" },
-    "Karachi": { x: 600, y: 200, color: "black" },
-    "Riyadh": { x: 560, y: 220, color: "black" },
-    "Delhi": { x: 620, y: 180, color: "black" },
-    "Mumbai": { x: 610, y: 220, color: "black" },
-    "Kolkata": { x: 660, y: 170, color: "black" },
-    "Chennai": { x: 650, y: 220, color: "black" },
+    "Moscow": { x: 540 * SCALE_FACTOR, y: 90 * SCALE_FACTOR, color: "black" },
+    "Istanbul": { x: 520 * SCALE_FACTOR, y: 130 * SCALE_FACTOR, color: "black" },
+    "Baghdad": { x: 550 * SCALE_FACTOR, y: 170 * SCALE_FACTOR, color: "black" },
+    "Cairo": { x: 500 * SCALE_FACTOR, y: 190 * SCALE_FACTOR, color: "black" },
+    "Algiers": { x: 470 * SCALE_FACTOR, y: 170 * SCALE_FACTOR, color: "black" },
+    "Tehran": { x: 570 * SCALE_FACTOR, y: 120 * SCALE_FACTOR, color: "black" },
+    "Karachi": { x: 600 * SCALE_FACTOR, y: 200 * SCALE_FACTOR, color: "black" },
+    "Riyadh": { x: 560 * SCALE_FACTOR, y: 220 * SCALE_FACTOR, color: "black" },
+    "Delhi": { x: 620 * SCALE_FACTOR, y: 180 * SCALE_FACTOR, color: "black" },
+    "Mumbai": { x: 610 * SCALE_FACTOR, y: 220 * SCALE_FACTOR, color: "black" },
+    "Kolkata": { x: 660 * SCALE_FACTOR, y: 170 * SCALE_FACTOR, color: "black" },
+    "Chennai": { x: 650 * SCALE_FACTOR, y: 220 * SCALE_FACTOR, color: "black" },
 
-    // 🔴 RED CITIES (Now all 12 included)
-    "Beijing": { x: 700, y: 100, color: "red" },
-    "Seoul": { x: 740, y: 110, color: "red" },
-    "Shanghai": { x: 720, y: 140, color: "red" },
-    "Hong Kong": { x: 720, y: 180, color: "red" },
-    "Taipei": { x: 750, y: 190, color: "red" },
-    "Tokyo": { x: 780, y: 130, color: "red" },
-    "Manila": { x: 770, y: 230, color: "red" },
-    "Sydney": { x: 820, y: 350, color: "red" },
-    "Jakarta": { x: 700, y: 280, color: "red" },
-    "Bangkok": { x: 670, y: 240, color: "red" },
-    "Ho Chi Minh City": { x: 730, y: 260, color: "red" },
-    "Osaka": { x: 800, y: 150, color: "red" }
+    // 🔴 RED CITIES (Now all 12 are included!)
+    "Beijing": { x: 700 * SCALE_FACTOR, y: 100 * SCALE_FACTOR, color: "red" },
+    "Seoul": { x: 740 * SCALE_FACTOR, y: 110 * SCALE_FACTOR, color: "red" },
+    "Shanghai": { x: 720 * SCALE_FACTOR, y: 140 * SCALE_FACTOR, color: "red" },
+    "Hong Kong": { x: 720 * SCALE_FACTOR, y: 180 * SCALE_FACTOR, color: "red" },
+    "Taipei": { x: 750 * SCALE_FACTOR, y: 190 * SCALE_FACTOR, color: "red" },
+    "Tokyo": { x: 780 * SCALE_FACTOR, y: 130 * SCALE_FACTOR, color: "red" },
+    "Manila": { x: 770 * SCALE_FACTOR, y: 230 * SCALE_FACTOR, color: "red" },
+    "Sydney": { x: 820 * SCALE_FACTOR, y: 350 * SCALE_FACTOR, color: "red" },
+    "Jakarta": { x: 680 * SCALE_FACTOR, y: 260 * SCALE_FACTOR, color: "red" },
+    "Bangkok": { x: 660 * SCALE_FACTOR, y: 240 * SCALE_FACTOR, color: "red" },
+    "Ho Chi Minh City": { x: 690 * SCALE_FACTOR, y: 280 * SCALE_FACTOR, color: "red" },
+    "Osaka": { x: 800 * SCALE_FACTOR, y: 150 * SCALE_FACTOR, color: "red" }
 };
+
 
 
 
@@ -134,96 +137,182 @@ const GameBoard = () => {
                 </h2>
             </div>
 
+
+
+
+
+
+
             <div className="game-board">
-                {/* ✅ Render Connections First */}
-                {Object.keys(gameState.cities).flatMap((city) => {
-                    const cityData = gameState.cities[city];
-                    const position = cityPositions[city];
+    {/* ✅ Render Connections First */}
+    {Object.keys(gameState.cities).flatMap((city) => {
+        const cityData = gameState.cities[city];
+        const position = cityPositions[city];
 
-                    if (!position) return [];
+        if (!position) return [];
 
-                    return cityData.connectedCities.map((connectedCity) => {
-                        const connectedPosition = cityPositions[connectedCity];
-                        if (!connectedPosition) return null;
+        return cityData.connectedCities.map((connectedCity) => {
+            const connectedPosition = cityPositions[connectedCity];
+            if (!connectedPosition) return null;
 
-                        let className = "connection";
-                        let adjustedX = position.x + 10; // ✅ Center line at city
-                        let adjustedY = position.y + 10; // ✅ Center line at city
-                        let adjustedWidth = 0;
-                        let adjustedRotation = 0;
+            let className = "connection";
+            let adjustedX = position.x + 10;
+            let adjustedY = position.y + 10;
+            let adjustedWidth = 0;
+            let adjustedRotation = 0;
 
-                        // ✅ Detect wrap-around connections and adjust accordingly
-                        if (
-                            (city === "Sydney" && connectedCity === "Los Angeles") ||
-                            (city === "Tokyo" && connectedCity === "San Francisco") ||
-                            (city === "Manila" && connectedCity === "San Francisco")
-                        ) {
-                            className += " connection-wrap-right"; // Arrow pointing right
-                            adjustedX = position.x + 10; // Offset to center the start
-                            adjustedWidth = 100; // Wrap distance
-                            adjustedRotation = 0; // Horizontal arrow
-                        } else if (
-                            (city === "Los Angeles" && connectedCity === "Sydney") ||
-                            (city === "San Francisco" && connectedCity === "Tokyo") ||
-                            (city === "San Francisco" && connectedCity === "Manila")
-                        ) {
-                            className += " connection-wrap-left"; // Arrow pointing left
-                            adjustedX = position.x - 10; // Offset to center the start
-                            adjustedWidth = 100;
-                            adjustedRotation = 0;
-                        } else {
-                            // Regular connection
-                            const dx = connectedPosition.x - position.x;
-                            const dy = connectedPosition.y - position.y;
-                            adjustedWidth = Math.sqrt(dx * dx + dy * dy);
-                            adjustedRotation = Math.atan2(dy, dx) * (180 / Math.PI);
-                        }
+            // ✅ Wrap-around: Sydney ↔ Los Angeles
+            if (city === "Sydney" && connectedCity === "Los Angeles") {
+                className += " connection-wrap-right";
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x + 20}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            } else if (city === "Los Angeles" && connectedCity === "Sydney") {
+                className += " connection-wrap-left";
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x - 120}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            }
+            // ✅ Wrap-around: Tokyo ↔ San Francisco
+            else if (city === "Tokyo" && connectedCity === "San Francisco") {
+                className += " connection-wrap-right";
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x + 20}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            } else if (city === "San Francisco" && connectedCity === "Tokyo") {
+                className += " connection-wrap-left";
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x - 120}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            }
+            // ✅ Wrap-around: Manila ↔ San Francisco
+            else if (city === "Manila" && connectedCity === "San Francisco") {
+                className += " connection-wrap-right"; // ✅ Arrow pointing right
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x + 20}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            } else if (city === "San Francisco" && connectedCity === "Manila") {
+                className += " connection-wrap-left"; // ✅ Arrow pointing left
+                return (
+                    <div
+                        key={`${city}-${connectedCity}`}
+                        className={className}
+                        style={{
+                            left: `${position.x - 120}px`,
+                            top: `${position.y}px`,
+                            width: `100px`,
+                            transform: `rotate(0deg)`,
+                        }}
+                    ></div>
+                );
+            }
+            // ✅ Regular connections
+            else {
+                const dx = connectedPosition.x - position.x;
+                const dy = connectedPosition.y - position.y;
+                adjustedWidth = Math.sqrt(dx * dx + dy * dy);
+                adjustedRotation = Math.atan2(dy, dx) * (180 / Math.PI);
+            }
 
-                        return (
-                            <div
-                                key={`${city}-${connectedCity}`}
-                                className={className}
-                                style={{
-                                    left: `${adjustedX}px`,
-                                    top: `${adjustedY}px`,
-                                    width: `${adjustedWidth}px`,
-                                    transform: `rotate(${adjustedRotation}deg)`,
-                                }}
-                            ></div>
-                        );
-                    });
-                })}
+            return (
+                <div
+                    key={`${city}-${connectedCity}`}
+                    className={className}
+                    style={{
+                        left: `${adjustedX}px`,
+                        top: `${adjustedY}px`,
+                        width: `${adjustedWidth}px`,
+                        transform: `rotate(${adjustedRotation}deg)`,
+                    }}
+                ></div>
+            );
+        });
+    })}
 
-                {/* ✅ Render Cities - Ensure They Are Centered on Their Connections */}
-                {Object.keys(gameState.cities).map((city) => {
-                    const position = cityPositions[city];
+    {/* ✅ Render Cities */}
+    {Object.keys(gameState.cities).map((city) => {
+        const position = cityPositions[city];
 
-                    if (!position) {
-                        console.warn(`⚠️ No position found for city: ${city}`);
-                        return null;
-                    }
+        if (!position) {
+            console.warn(`⚠️ No position found for city: ${city}`);
+            return null;
+        }
 
-                    return (
-                        <div
-                            key={city}
-                            className={`city ${position.color}`}
-                            style={{
-                                left: `${position.x - 10}px`, // ✅ Center city on connection lines
-                                top: `${position.y - 10}px`, // ✅ Center city on connection lines
-                                background: position.color,
-                                color: position.color === "yellow" ? "black" : "white",
-                                position: "absolute",
-                                zIndex: 1, // Ensure cities are above lines
-                            }}
-                            onClick={() => setSelectedCity(city)}
-                        >
-                            {city}
-                        </div>
-                    );
-                })}
+        return (
+            <div
+                key={city}
+                className={`city ${position.color}`}
+                style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`,
+                    background: position.color,
+                    color: position.color === "yellow" ? "black" : "white",
+                    position: "absolute",
+                    zIndex: 1, // Ensure cities are above lines
+                }}
+                onClick={() => setSelectedCity(city)}
+            >
+                {city}
             </div>
+        );
+    })}
+</div>
+
+
 
                 
+
+                
+
+
+
+
+
 
 
 

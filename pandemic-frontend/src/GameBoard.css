@@ -1,10 +1,10 @@
 /* pandemic_frontend/src/GameBoard.css */
 .game-board {
     position: relative;
-    width: 1000px;  /* Increased width */
-    height: 700px;  /* Increased height */
+    width: 1800px; /* Increase width */
+    height: 1100px; /* Increase height */
     border: 2px solid black;
-    background-color: #20232a; /* Darker background */
+    background-color: #20232a;
 }
 
 .city {
@@ -12,15 +12,15 @@
     font-size: 8px;
     font-weight: bold;
     transition: transform 0.2s ease-in-out;
-    width: 20px; /* ✅ Ensure cities are 20px */
-    height: 20px; /* ✅ Ensure cities are 20px */
+    width: 30px; /* 50% bigger */
+    height: 30px; /* 50% bigger */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: absolute;
-    transform: translate(50%, 50%); /* ✅ Center the city on its coordinates */
+    transform: translate(0%, 0%); /* ✅ Center the city on its coordinates */
 }
 
 .city.yellow {
@@ -49,21 +49,20 @@
     z-index: 0;
 }
 
-/* ✅ Add arrowhead to right-wrapping connections */
+/* ✅ Fix wrap-around alignment */
 .connection-wrap-right::after {
     content: "";
     position: absolute;
-    right: 0;
+    right: -4px;
     border-left: 8px solid white;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
 }
 
-/* ✅ Add arrowhead to left-wrapping connections */
 .connection-wrap-left::after {
     content: "";
     position: absolute;
-    left: 0;
+    left: -4px;
     border-right: 8px solid white;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
