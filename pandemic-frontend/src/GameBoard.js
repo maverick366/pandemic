@@ -16,7 +16,7 @@ const cityPositions = {
 const GameBoard = () => {
     const [gameState, setGameState] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
-    
+
     useEffect(() => {
         fetchGameState();
     }, []);
@@ -24,66 +24,61 @@ const GameBoard = () => {
     const fetchGameState = async () => {
         try {
             const response = await axios.get(`${API_URL}/game-state`);
+            console.log("Fetched game state:", response.data);
             setGameState(response.data);
         } catch (error) {
-            console.error('Error fetching game state:', error);
+            console.error("Error fetching game state:", error);
         }
     };
-    
-    const handleAction = async (action) => {
-        if (!selectedCity) return;
-        try {
-            await axios.post(`${API_URL}/action`, {
-                player: 'Player 1',
-                action,
-                city: selectedCity,
-            });
-            fetchGameState(); // Refresh game state
-        } catch (error) {
-            console.error('Error performing action:', error);
-        }
-    };
-    
-    console.log("Game State Data:", gameState);
-    console.log("City Positions Data:", cityPositions);
-    console.log("Cities in State:", gameState?.cities ? Object.keys(gameState.cities) : "No cities found");
 
+    // Log when gameState updates
+    useEffect(() => {
+        console.log("Updated gameState:", gameState);
+    }, [gameState]);
 
-    if (!gameState) return <div>Loading game...</div>;
-    
+    if (!gameState || !gameState.cities || Object.keys(gameState.cities).length === 0) {
+        return <div>Loading game...</div>;
+    }
+
     return (
         <div className="game-container">
-            <h1>Pandemic Game - Test Update</h1>
+            <h1>Pandemic Game</h1>
             <div className="game-info">
                 <h2>Outbreaks: {gameState.outbreaks}</h2>
                 <h2>Cures Discovered: {gameState.curesDiscovered}</h2>
             </div>
-            
+
             <div className="game-board">
                 {Object.keys(gameState.cities).map((city) => {
                     const position = cityPositions[city];
-                    if (!position) return null; // Skip cities without positions
+                    if (!position) return null;
+
+                    console.log("Rendering city:", city, gameState.cities[city]); // Debugging
 
                     return (
-                        <div 
-                            key={city} 
-                            className="city" 
-                            style={{ left: `${position.x}px`, top: `${position.y}px` }}
-                            onClick={() => setSelectedCity(city)}
+                        <div
+                            key={city}
+                            className="city"
+                            style={{
+                                left: `${position.x}px`,
+                                top: `${position.y}px`,
+                                background: "blue",
+                                color: "white",
+                                padding: "5px",
+                                position: "absolute"
+                            }}
                         >
                             {city}
-                            <div className="infection">Infections: {gameState.cities[city].infectionLevel}</div>
                         </div>
                     );
                 })}
-
             </div>
-            
+
             <div className="controls">
                 <h3>Selected City: {selectedCity || 'None'}</h3>
-                <button onClick={() => handleAction('move')} disabled={!selectedCity}>Move Here</button>
-                <button onClick={() => handleAction('treat')} disabled={!selectedCity}>Treat Disease</button>
-                <button onClick={() => handleAction('build')} disabled={!selectedCity}>Build Research Station</button>
+                <button onClick={() => console.log("Move action")} disabled={!selectedCity}>Move Here</button>
+                <button onClick={() => console.log("Treat action")} disabled={!selectedCity}>Treat Disease</button>
+                <button onClick={() => console.log("Build action")} disabled={!selectedCity}>Build Research Station</button>
             </div>
         </div>
     );
