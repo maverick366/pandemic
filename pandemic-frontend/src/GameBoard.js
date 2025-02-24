@@ -13,7 +13,6 @@ const cityPositions = {
     'Mexico City': { x: 150, y: 450 }
 };
 
-// Function to determine the color of a city based on infection level
 const getInfectionColor = (infectionLevel) => {
     if (infectionLevel >= 3) return "red";
     if (infectionLevel === 2) return "orange";
@@ -23,7 +22,7 @@ const getInfectionColor = (infectionLevel) => {
 
 const GameBoard = () => {
     const [gameState, setGameState] = useState(null);
-    const [selectedCity, setSelectedCity] = useState(''); // ✅ Ensuring selectedCity is declared
+    const [selectedCity, setSelectedCity] = useState('');
 
     useEffect(() => {
         fetchGameState();
@@ -39,12 +38,7 @@ const GameBoard = () => {
         }
     };
 
-    // Log when gameState updates
-    useEffect(() => {
-        console.log("Updated gameState:", gameState);
-    }, [gameState]);
-
-    // ✅ Function to treat a disease in the selected city
+    // ✅ Function to treat a disease
     const treatDisease = async () => {
         if (!selectedCity) {
             console.warn("⚠️ No city selected!");
@@ -60,7 +54,17 @@ const GameBoard = () => {
         }
     };
 
-    // ✅ Ensure we only render when gameState is fully loaded
+    // ✅ Function to trigger an outbreak
+    const triggerOutbreak = async () => {
+        try {
+            const response = await axios.post(`${API_URL}/outbreak`);
+            console.log(response.data.message);
+            fetchGameState(); // Refresh game state after outbreak
+        } catch (error) {
+            console.error("Error triggering outbreak:", error);
+        }
+    };
+
     if (!gameState || !gameState.cities || Object.keys(gameState.cities).length === 0) {
         return <div className="loading">Loading game...</div>;
     }
@@ -69,20 +73,19 @@ const GameBoard = () => {
         <div className="game-container">
             <h1>Pandemic Game</h1>
             <div className="game-info">
-                <h2>Outbreaks: {gameState.markers.outbreaks}</h2>
+                <h2>Outbreaks: {gameState.markers.outbreaks} / 8</h2>
                 <h2>Cures Discovered: {Object.values(gameState.markers.cureMarkers).filter(Boolean).length}</h2>
                 <h2>Eradicated Diseases: {Object.entries(gameState.markers.eradicated)
                     .filter(([_, isEradicated]) => isEradicated)
                     .map(([color]) => color)
-                    .join(", ") || "None"}</h2>
+                    .join(", ") || "None"}
+                </h2>
             </div>
 
             <div className="game-board">
                 {Object.keys(gameState.cities).map((city) => {
                     const position = cityPositions[city];
                     if (!position) return null;
-
-                    console.log("Rendering city:", city, gameState.cities[city]);
 
                     return (
                         <div
@@ -96,7 +99,7 @@ const GameBoard = () => {
                                 padding: "5px",
                                 position: "absolute"
                             }}
-                            onClick={() => setSelectedCity(city)} // ✅ Selecting the city
+                            onClick={() => setSelectedCity(city)}
                         >
                             {city} ({gameState.cities[city].infectionLevel})
                         </div>
@@ -111,6 +114,9 @@ const GameBoard = () => {
                     disabled={!selectedCity || gameState.cities[selectedCity].infectionLevel === 0}
                 >
                     Treat Disease
+                </button>
+                <button onClick={triggerOutbreak} disabled={gameState.markers.outbreaks >= 8}>
+                    Trigger Outbreak
                 </button>
                 <button onClick={() => console.log("Move action")} disabled={!selectedCity}>Move Here</button>
                 <button onClick={() => console.log("Build action")} disabled={!selectedCity}>Build Research Station</button>

@@ -44,7 +44,7 @@ const markers = {
         black: false,
         red: false
     },
-    eradicated: {  // ✅ New eradication state
+    eradicated: {
         yellow: false,
         blue: false,
         black: false,
@@ -124,6 +124,21 @@ app.post('/treat-disease', (req, res) => {
     checkEradication(diseaseColor);
 
     res.json({ message: `Treated 1 ${diseaseColor} disease cube in ${city}.`, gameState });
+});
+
+app.post('/outbreak', (req, res) => {
+    if (gameState.markers.outbreaks >= 8) {
+        return res.status(400).json({ message: "Game Over! Maximum outbreaks reached." });
+    }
+
+    gameState.markers.outbreaks += 1;
+    console.log(`⚠️ Outbreak occurred! Outbreaks count: ${gameState.markers.outbreaks}`);
+
+    if (gameState.markers.outbreaks >= 8) {
+        console.log("❌ Game Over! Maximum outbreaks reached.");
+    }
+
+    res.json({ message: "Outbreak tracked.", gameState });
 });
 
 // 🔹 Start Server
