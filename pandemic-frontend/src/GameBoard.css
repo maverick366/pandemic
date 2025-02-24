@@ -12,12 +12,11 @@
     position: relative;
     width: 600px;
     height: 500px;
-    background-color: #eef; /* Light blue for now (can replace with a map image) */
+    background-color: #eef; /* Light blue for now */
     border: 2px solid black;
     margin: auto;
 }
 
-/* Position cities dynamically */
 .city {
     position: absolute;
     background: lightblue;

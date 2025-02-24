@@ -20,7 +20,7 @@ const GameBoard = () => {
     useEffect(() => {
         fetchGameState();
     }, []);
-    
+
     const fetchGameState = async () => {
         try {
             const response = await axios.get(`${API_URL}/game-state`);
@@ -44,12 +44,14 @@ const GameBoard = () => {
         }
     };
     
+    console.log("Game State Data:", gameState);
+    console.log("City Positions Data:", cityPositions);
+    console.log("Cities in State:", gameState?.cities ? Object.keys(gameState.cities) : "No cities found");
+
+
     if (!gameState) return <div>Loading game...</div>;
     
     return (
-    console.log("Game State:", gameState);
-    console.log("City Positions:", cityPositions);
-
         <div className="game-container">
             <h1>Pandemic Game - Test Update</h1>
             <div className="game-info">
@@ -58,17 +60,23 @@ const GameBoard = () => {
             </div>
             
             <div className="game-board">
-                {Object.keys(gameState.cities).map((city) => (
-                    <div 
-                        key={city} 
-                        className="city" 
-                        style={{ left: cityPositions[city]?.x, top: cityPositions[city]?.y }}
-                        onClick={() => setSelectedCity(city)}
-                    >
-                        {city}
-                        <div className="infection">Infections: {gameState.cities[city].infectionLevel}</div>
-                    </div>
-                ))}
+                {Object.keys(gameState.cities).map((city) => {
+                    const position = cityPositions[city];
+                    if (!position) return null; // Skip cities without positions
+
+                    return (
+                        <div 
+                            key={city} 
+                            className="city" 
+                            style={{ left: `${position.x}px`, top: `${position.y}px` }}
+                            onClick={() => setSelectedCity(city)}
+                        >
+                            {city}
+                            <div className="infection">Infections: {gameState.cities[city].infectionLevel}</div>
+                        </div>
+                    );
+                })}
+
             </div>
             
             <div className="controls">

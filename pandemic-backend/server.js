@@ -27,8 +27,10 @@ app.post('/start-game', (req, res) => {
 
 // Get current game state
 app.get('/game-state', (req, res) => {
+    console.log("Sending game state:", gameState);  // Debugging line
     res.json(gameState);
 });
+
 
 // Handle player actions (move, treat, build, etc.)
 app.post('/action', (req, res) => {
