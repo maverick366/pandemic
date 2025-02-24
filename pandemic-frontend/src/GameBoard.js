@@ -48,7 +48,7 @@ const GameBoard = () => {
     
     return (
         <div className="game-container">
-            <h1>Pandemic Game</h1>
+            <h1>Pandemic Game - Test Update</h1>
             <div className="game-info">
                 <h2>Outbreaks: {gameState.outbreaks}</h2>
                 <h2>Cures Discovered: {gameState.curesDiscovered}</h2>
